@@ -1,6 +1,6 @@
 package com.pds.ImobiGest.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pds.ImobiGest.enums.FormaPagamento;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -48,7 +48,7 @@ public class VendaEntity {
     private List<ParcelaEntity> parcelas;
 
     @OneToMany(mappedBy = "venda")
-    @JsonManagedReference
+    @JsonIgnore
     private List<ComissaoEntity> comissoes;
 
 
