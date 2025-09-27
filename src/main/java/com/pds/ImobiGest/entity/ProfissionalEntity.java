@@ -1,6 +1,8 @@
 package com.pds.ImobiGest.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,9 +25,11 @@ public class ProfissionalEntity {
     @Column(name = "nome")
     private String nome;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "profissional")
     private List<ComissaoEntity> comissoes;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "profissional")
     private List<ProfissionalCargoEntity> cargos;
 

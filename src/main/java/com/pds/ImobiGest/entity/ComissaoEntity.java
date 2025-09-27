@@ -1,5 +1,6 @@
 package com.pds.ImobiGest.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,6 +31,7 @@ public class ComissaoEntity {
     private VendaEntity venda;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "id_profissional")
     private ProfissionalEntity profissional;
 }
