@@ -1,5 +1,6 @@
 package com.pds.ImobiGest.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,5 +27,6 @@ public class CargoEntity {
     private List<ProfissionalCargoEntity> profissionais;
 
     @OneToMany(mappedBy = "cargo")
+    @JsonIgnoreProperties({"imobiliaria", "cargo"})
     private List<ConfigComissaoEntity> configComissao;
 }
