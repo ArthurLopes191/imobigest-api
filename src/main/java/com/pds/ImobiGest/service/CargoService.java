@@ -49,7 +49,7 @@ public class CargoService {
         return convertToDTO(cargoEntity);
     }
 
-    private CargoEntity getById(Integer id) throws RegraDeNegocioException {
+    public CargoEntity getById(Integer id) throws RegraDeNegocioException {
         return cargoRepository.findById(id)
                 .orElseThrow(() -> new RegraDeNegocioException("Cargo não encontrado"));
     }

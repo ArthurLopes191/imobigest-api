@@ -61,7 +61,7 @@ public class ImobiliariaService {
         return objectMapper.convertValue(entity, ImobiliariaDTO.class);
     }
 
-    private ImobiliariaEntity getById(Integer id) throws RegraDeNegocioException {
+    public ImobiliariaEntity getById(Integer id) throws RegraDeNegocioException {
         return imobiliariaRepository.findById(id)
                 .orElseThrow(() -> new RegraDeNegocioException("Imobiliária não encontrada"));
     }

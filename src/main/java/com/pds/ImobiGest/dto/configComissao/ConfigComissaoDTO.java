@@ -1,4 +1,4 @@
-package com.pds.ImobiGest.dto.Imobiliaria;
+package com.pds.ImobiGest.dto.configComissao;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,8 +9,9 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class ImobiliariaDTO {
+public class ConfigComissaoDTO {
     private Integer id;
-    private String nome;
-    private BigDecimal meta;
+    private Integer idImobiliaria;
+    private Integer idCargo;
+    private BigDecimal percentual;
 }

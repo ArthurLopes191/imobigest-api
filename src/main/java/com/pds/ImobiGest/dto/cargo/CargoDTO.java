@@ -8,5 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class CargoDTO {
+    private Integer id;
     private String nome;
 }

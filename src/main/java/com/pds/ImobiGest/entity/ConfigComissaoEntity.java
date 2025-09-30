@@ -1,5 +1,6 @@
 package com.pds.ImobiGest.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,9 +25,11 @@ public class ConfigComissaoEntity {
 
     @ManyToOne
     @JoinColumn(name = "id_imobiliaria", referencedColumnName = "id")
+    @JsonIgnoreProperties("configuracoes")
     private ImobiliariaEntity imobiliaria;
 
     @ManyToOne
     @JoinColumn(name= "id_cargo", referencedColumnName = "id")
+    @JsonIgnoreProperties("configuracoes")
     private CargoEntity cargo;
 }
