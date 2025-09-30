@@ -1,5 +1,6 @@
 package com.pds.ImobiGest.controller;
 
+import com.pds.ImobiGest.controller.documentation.ImobiliariaControllerDoc;
 import com.pds.ImobiGest.dto.Imobiliaria.ImobiliariaCreateDTO;
 import com.pds.ImobiGest.dto.Imobiliaria.ImobiliariaDTO;
 import com.pds.ImobiGest.exceptions.RegraDeNegocioException;
@@ -17,7 +18,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 @RequestMapping("/imobiliaria")
-public class ImobiliariaController {
+public class ImobiliariaController implements ImobiliariaControllerDoc {
 
     private final ImobiliariaService imobiliariaService;
 
