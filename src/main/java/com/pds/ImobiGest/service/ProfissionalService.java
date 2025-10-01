@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pds.ImobiGest.dto.profissional.ProfissionalCreateDTO;
 import com.pds.ImobiGest.dto.profissional.ProfissionalDTO;
 import com.pds.ImobiGest.entity.ConfigComissaoEntity;
+import com.pds.ImobiGest.entity.ImobiliariaEntity;
 import com.pds.ImobiGest.entity.ProfissionalEntity;
 import com.pds.ImobiGest.exceptions.RegraDeNegocioException;
 import com.pds.ImobiGest.repository.ProfissionalRepository;
@@ -15,14 +16,15 @@ import org.springframework.stereotype.Service;
 public class ProfissionalService {
 
     private final ProfissionalRepository profissionalRepository;
-    private final ObjectMapper objectMapper;
+    private final ImobiliariaService imobiliariaService;
 
     public ProfissionalDTO create(ProfissionalCreateDTO profissionalCreateDTO) throws RegraDeNegocioException {
         ProfissionalEntity profissional = new ProfissionalEntity();
         profissional.setNome(profissionalCreateDTO.getNome());
 
-        //TODO fazer esquema de cargos
-        //profissional.setCargos(profissionalCreateDTO.getCargos());
+        ImobiliariaEntity imobiliaria = imobiliariaService.getById(profissionalCreateDTO.getIdImobiliaria());
+
+        profissional.setImobiliaria(imobiliaria);
 
         ProfissionalEntity saved = profissionalRepository.save(profissional);
 
@@ -35,6 +37,11 @@ public class ProfissionalService {
     }
 
     private ProfissionalDTO convertToDTO(ProfissionalEntity entity){
-        return objectMapper.convertValue(entity, ProfissionalDTO.class);
+        ProfissionalDTO dto = new ProfissionalDTO();
+        dto.setId(entity.getId());
+        dto.setNome(entity.getNome());
+        dto.setIdImobiliaria(entity.getImobiliaria().getId());
+
+        return dto;
     }
 }

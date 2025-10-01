@@ -25,6 +25,10 @@ public class ProfissionalEntity {
     @Column(name = "nome")
     private String nome;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "imobiliaria_id", nullable = false)
+    private ImobiliariaEntity imobiliaria;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "profissional")
     private List<ComissaoEntity> comissoes;

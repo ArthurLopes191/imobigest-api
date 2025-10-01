@@ -13,5 +13,5 @@ import java.util.List;
 public class ProfissionalCreateDTO {
 
     private String nome;
-//    private List<ProfissionalCargoEntity> cargos;
+    private Integer idImobiliaria;
 }

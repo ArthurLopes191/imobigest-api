@@ -27,6 +27,9 @@ public class ImobiliariaEntity {
     @Column(name = "meta")
     private BigDecimal meta;
 
+    @OneToMany(mappedBy = "imobiliaria", cascade = CascadeType.ALL)
+    private List<ProfissionalEntity> profissionais;
+
     @OneToMany(mappedBy = "imobiliaria")
     @JsonIgnoreProperties({"imobiliaria", "cargo"})
     private List<ConfigComissaoEntity> configuracoes;
