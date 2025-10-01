@@ -1,5 +1,6 @@
 package com.pds.ImobiGest.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,11 +18,13 @@ public class ProfissionalCargoEntity {
     @SequenceGenerator(name = "SEQ_PROFISSIONAL_CARGO", sequenceName = "SEQ_PROFISSIONAL_CARGO", allocationSize = 1)
     private Integer id;
 
-    @ManyToOne
+    @JsonBackReference("profissional-cargo")
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_profissional", referencedColumnName = "id")
     private ProfissionalEntity profissional;
 
-    @ManyToOne
+    @JsonBackReference("cargo-profissional")
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_cargo", referencedColumnName = "id")
     private CargoEntity cargo;
 }

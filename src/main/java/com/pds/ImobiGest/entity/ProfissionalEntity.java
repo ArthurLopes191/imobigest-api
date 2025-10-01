@@ -25,12 +25,16 @@ public class ProfissionalEntity {
     @Column(name = "nome")
     private String nome;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_imobiliaria", nullable = false)
+    private ImobiliariaEntity imobiliaria;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "profissional")
     private List<ComissaoEntity> comissoes;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "profissional")
+    @JsonManagedReference("profissional-cargo")
+    @OneToMany(mappedBy = "profissional", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ProfissionalCargoEntity> cargos;
 
 }
