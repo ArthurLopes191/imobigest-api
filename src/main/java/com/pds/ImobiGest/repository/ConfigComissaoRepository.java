@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface ConfigComissaoRepository extends JpaRepository<ConfigComissaoEntity, Integer> {
 
     Optional<ConfigComissaoEntity> findByImobiliariaIdAndCargoId(Integer idImobiliaria, Integer idCargo);
+
+    Optional<ConfigComissaoEntity> findByImobiliariaIdAndCargoIdAndIdNot(Integer idImobiliaria, Integer idCargo, Integer id);
 }

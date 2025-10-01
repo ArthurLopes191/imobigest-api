@@ -47,6 +47,13 @@ public class ConfigComissaoService {
     }
 
     public ConfigComissaoDTO update(Integer id, ConfigComissaoCreateDTO configComissaoCreateDTO) throws RegraDeNegocioException {
+        Optional<ConfigComissaoEntity> existente = configComissaoRepository
+                .findByImobiliariaIdAndCargoIdAndIdNot(configComissaoCreateDTO.getIdImobiliaria(), configComissaoCreateDTO.getIdCargo(), id);
+
+        if (existente.isPresent()) {
+            throw new RegraDeNegocioException("Já existe configuração de comissão para este cargo nesta imobiliária");
+        }
+
         ConfigComissaoEntity configComissaoEntity = getById(id);
 
         ImobiliariaEntity imobiliaria = imobiliariaService.getById(configComissaoCreateDTO.getIdImobiliaria());
