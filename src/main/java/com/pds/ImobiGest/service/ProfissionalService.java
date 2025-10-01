@@ -11,6 +11,9 @@ import com.pds.ImobiGest.repository.ProfissionalRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class ProfissionalService {
@@ -29,6 +32,35 @@ public class ProfissionalService {
         ProfissionalEntity saved = profissionalRepository.save(profissional);
 
         return convertToDTO(saved);
+    }
+
+    public ProfissionalDTO update(Integer id, ProfissionalCreateDTO profissionalCreateDTO) throws RegraDeNegocioException {
+        ProfissionalEntity profissional = getById(id);
+        profissional.setNome(profissionalCreateDTO.getNome());
+
+        ImobiliariaEntity imobiliaria = imobiliariaService.getById(profissionalCreateDTO.getIdImobiliaria());
+
+        profissional.setImobiliaria(imobiliaria);
+
+        ProfissionalEntity saved = profissionalRepository.save(profissional);
+
+        return convertToDTO(saved);
+    }
+
+    public void delete(Integer id) throws RegraDeNegocioException {
+        ProfissionalEntity profissional = getById(id);
+        profissionalRepository.delete(profissional);
+    }
+
+    public ProfissionalDTO listById(Integer id) throws RegraDeNegocioException {
+        ProfissionalEntity profissional = getById(id);
+        return convertToDTO(profissional);
+    }
+
+    public List<ProfissionalDTO> list(){
+        return profissionalRepository.findAll().stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
     public ProfissionalEntity getById(Integer id) throws RegraDeNegocioException {

@@ -1,5 +1,6 @@
 package com.pds.ImobiGest.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -23,7 +24,8 @@ public class CargoEntity {
     @Column(name = "nome")
     private String nome;
 
-    @OneToMany(mappedBy = "cargo")
+    @JsonBackReference("profissional-cargo")
+    @OneToMany(mappedBy = "cargo", fetch = FetchType.LAZY)
     private List<ProfissionalCargoEntity> profissionais;
 
     @OneToMany(mappedBy = "cargo")
