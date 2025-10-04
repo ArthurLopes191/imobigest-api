@@ -44,6 +44,10 @@ public class VendaEntity {
     @Column(name = "comprador_contato")
     private String compradorContato;
 
+    @ManyToOne
+    @JoinColumn(name = "id_imobiliaria")
+    private ImobiliariaEntity imobiliaria;
+
     @OneToMany(mappedBy = "venda")
     private List<ParcelaEntity> parcelas;
 

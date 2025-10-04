@@ -27,6 +27,7 @@ public class ProfissionalEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_imobiliaria", nullable = false)
+    @JsonIgnore
     private ImobiliariaEntity imobiliaria;
 
     @JsonManagedReference
