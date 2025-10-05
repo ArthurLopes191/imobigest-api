@@ -1,5 +1,6 @@
 package com.pds.ImobiGest.controller;
 
+import com.pds.ImobiGest.controller.documentation.ComissaoControllerDoc;
 import com.pds.ImobiGest.dto.comissao.ComissaoCreateDTO;
 import com.pds.ImobiGest.dto.comissao.ComissaoDTO;
 import com.pds.ImobiGest.exceptions.RegraDeNegocioException;
@@ -17,7 +18,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 @RequestMapping("/comissao")
-public class ComissaoController {
+public class ComissaoController implements ComissaoControllerDoc {
 
     private final ComissaoService comissaoService;
 
