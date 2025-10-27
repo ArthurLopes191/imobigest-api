@@ -1,6 +1,7 @@
 package com.pds.ImobiGest.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,10 +29,11 @@ public class ImobiliariaEntity {
     private BigDecimal meta;
 
     @OneToMany(mappedBy = "imobiliaria", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties({"imobiliaria", "comissoes", "cargos"})
     private List<ProfissionalEntity> profissionais;
 
     @OneToMany(mappedBy = "imobiliaria")
-    @JsonIgnoreProperties({"imobiliaria", "cargo"})
+    @JsonIgnoreProperties({"imobiliaria"})
     private List<ConfigComissaoEntity> configuracoes;
 
 }
