@@ -32,7 +32,7 @@ public class ImobiliariaEntity {
     @JsonIgnoreProperties({"imobiliaria", "comissoes", "cargos"})
     private List<ProfissionalEntity> profissionais;
 
-    @OneToMany(mappedBy = "imobiliaria")
+    @OneToMany(mappedBy = "imobiliaria", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties({"imobiliaria"})
     private List<ConfigComissaoEntity> configuracoes;
 

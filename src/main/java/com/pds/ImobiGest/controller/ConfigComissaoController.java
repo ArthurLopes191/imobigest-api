@@ -47,4 +47,9 @@ public class ConfigComissaoController implements ConfigComissaoControllerDoc {
     public ResponseEntity<ConfigComissaoDTO> listById(@PathVariable("id") Integer id) throws RegraDeNegocioException {
         return new ResponseEntity<>(configComissaoService.listById(id), HttpStatus.OK);
     }
+
+    @GetMapping("/imobiliaria/{idImobiliaria}")
+    public List<ConfigComissaoDTO> listByIdImobiliaria(@PathVariable("idImobiliaria") Integer idImobiliaria){
+        return configComissaoService.listByIdImobiliaria(idImobiliaria);
+    }
 }
