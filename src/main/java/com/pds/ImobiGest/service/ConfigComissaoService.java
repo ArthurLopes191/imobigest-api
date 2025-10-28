@@ -88,6 +88,12 @@ public class ConfigComissaoService {
                 .orElseThrow(() -> new RegraDeNegocioException("Configuração de Comissão não encontrada"));
     }
 
+    public List<ConfigComissaoDTO> listByIdImobiliaria(Integer idImobiliaria){
+        return configComissaoRepository.findByImobiliariaId(idImobiliaria).stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
     private ConfigComissaoDTO convertToDTO(ConfigComissaoEntity configComissaoEntity){
        ConfigComissaoDTO dto = new ConfigComissaoDTO();
        dto.setId(configComissaoEntity.getId());
