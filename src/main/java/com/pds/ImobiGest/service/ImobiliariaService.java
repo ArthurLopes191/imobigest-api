@@ -6,6 +6,7 @@ import com.pds.ImobiGest.dto.Imobiliaria.ImobiliariaDTO;
 import com.pds.ImobiGest.entity.ImobiliariaEntity;
 import com.pds.ImobiGest.exceptions.RegraDeNegocioException;
 import com.pds.ImobiGest.repository.ImobiliariaRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -47,9 +48,19 @@ public class ImobiliariaService {
 
     }
 
+    @Transactional
     public void delete(Integer id) throws RegraDeNegocioException {
-        ImobiliariaEntity imobiliariaEntity = getById(id);
-        imobiliariaRepository.delete(imobiliariaEntity);
+        if (!imobiliariaRepository.existsById(id)) {
+            throw new RegraDeNegocioException("Imobiliária não encontrada");
+        }
+
+        // Deletar na ordem correta (do mais dependente para o menos dependente)
+        imobiliariaRepository.deleteComissoesByImobiliariaId(id);
+        imobiliariaRepository.deleteProfissionalCargosByImobiliariaId(id);
+        imobiliariaRepository.deleteVendasByImobiliariaId(id); // NOVA LINHA
+        imobiliariaRepository.deleteConfigComissaoByImobiliariaId(id);
+        imobiliariaRepository.deleteProfissionaisByImobiliariaId(id);
+        imobiliariaRepository.deleteById(id);
     }
 
     public ImobiliariaDTO listById(Integer id) throws RegraDeNegocioException {

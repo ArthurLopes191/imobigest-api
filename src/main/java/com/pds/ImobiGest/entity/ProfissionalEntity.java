@@ -32,12 +32,12 @@ public class ProfissionalEntity {
     @JsonBackReference
     private ImobiliariaEntity imobiliaria;
 
-    @OneToMany(mappedBy = "profissional")
+    @OneToMany(mappedBy = "profissional", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties({"profissional"})
     private List<ComissaoEntity> comissoes;
 
 
-    @OneToMany(mappedBy = "profissional", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "profissional", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties({"imobiliaria", "comissoes", "cargos"})
     private List<ProfissionalCargoEntity> cargos;
 
