@@ -1,6 +1,9 @@
 package com.pds.ImobiGest.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pds.ImobiGest.dto.Imobiliaria.ImobiliariaResumoDTO;
+import com.pds.ImobiGest.dto.cargo.CargoResumoDTO;
+import com.pds.ImobiGest.dto.profissional.ProfissionalCompletoDTO;
 import com.pds.ImobiGest.dto.profissional.ProfissionalCreateDTO;
 import com.pds.ImobiGest.dto.profissional.ProfissionalDTO;
 import com.pds.ImobiGest.entity.ConfigComissaoEntity;
@@ -63,6 +66,18 @@ public class ProfissionalService {
                 .collect(Collectors.toList());
     }
 
+    public List<ProfissionalCompletoDTO> listCompleto() {
+        return profissionalRepository.findAll().stream()
+                .map(this::convertToCompletoDTO)
+                .collect(Collectors.toList());
+    }
+
+    public ProfissionalCompletoDTO listCompletoById(Integer id) throws RegraDeNegocioException {
+        ProfissionalEntity profissional = getById(id);
+        return convertToCompletoDTO(profissional);
+    }
+
+
     public ProfissionalEntity getById(Integer id) throws RegraDeNegocioException {
         return profissionalRepository.findById(id)
                 .orElseThrow(() -> new RegraDeNegocioException("Profissional não encontrado"));
@@ -73,6 +88,31 @@ public class ProfissionalService {
         dto.setId(entity.getId());
         dto.setNome(entity.getNome());
         dto.setIdImobiliaria(entity.getImobiliaria().getId());
+
+        return dto;
+    }
+
+    private ProfissionalCompletoDTO convertToCompletoDTO(ProfissionalEntity entity) {
+        ProfissionalCompletoDTO dto = new ProfissionalCompletoDTO();
+        dto.setId(entity.getId());
+        dto.setNome(entity.getNome());
+        dto.setIdImobiliaria(entity.getImobiliaria().getId());
+
+        // Imobiliária resumo
+        ImobiliariaResumoDTO imobiliariaDto = new ImobiliariaResumoDTO();
+        imobiliariaDto.setNome(entity.getImobiliaria().getNome());
+        dto.setImobiliaria(imobiliariaDto);
+
+        // Cargos
+        List<CargoResumoDTO> cargosDto = entity.getCargos().stream()
+                .map(pc -> {
+                    CargoResumoDTO cargoDto = new CargoResumoDTO();
+                    cargoDto.setId(pc.getCargo().getId());
+                    cargoDto.setNome(pc.getCargo().getNome());
+                    return cargoDto;
+                })
+                .collect(Collectors.toList());
+        dto.setCargos(cargosDto);
 
         return dto;
     }
