@@ -78,6 +78,11 @@ public class ProfissionalCargoService {
         ProfissionalCargoEntity profissionalCargoEntity = getById(id);
         return convertToDTO(profissionalCargoEntity);
     }
+    public List<ProfissionalCargoDTO> listByIdProfissional(Integer idProfissional) throws RegraDeNegocioException{
+        return profissionalCargoRepository.findByProfissionalId(idProfissional).stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
 
     public ProfissionalCargoEntity getById(Integer id) throws RegraDeNegocioException {
         return profissionalCargoRepository.findById(id)
