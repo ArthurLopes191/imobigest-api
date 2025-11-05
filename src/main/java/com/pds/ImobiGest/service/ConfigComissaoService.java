@@ -83,6 +83,14 @@ public class ConfigComissaoService {
         return convertToDTO(configComissaoEntity);
     }
 
+    public ConfigComissaoDTO findByImobiliariaIdAndCargoId(Integer idImobiliaria, Integer idCargo) throws RegraDeNegocioException {
+        ConfigComissaoEntity config = configComissaoRepository
+                .findByImobiliariaIdAndCargoId(idImobiliaria, idCargo)
+                .orElseThrow(() -> new RegraDeNegocioException(
+                        "Configuração de comissão não encontrada para imobiliária " + idImobiliaria + " e cargo " + idCargo));
+        return convertToDTO(config);
+    }
+
     public ConfigComissaoEntity getById(Integer id) throws RegraDeNegocioException {
         return configComissaoRepository.findById(id)
                 .orElseThrow(() -> new RegraDeNegocioException("Configuração de Comissão não encontrada"));

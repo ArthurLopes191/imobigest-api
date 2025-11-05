@@ -1,6 +1,7 @@
 package com.pds.ImobiGest.controller;
 
 import com.pds.ImobiGest.controller.documentation.ComissaoControllerDoc;
+import com.pds.ImobiGest.dto.comissao.ComissaoComCargoCreateDTO;
 import com.pds.ImobiGest.dto.comissao.ComissaoCreateDTO;
 import com.pds.ImobiGest.dto.comissao.ComissaoDTO;
 import com.pds.ImobiGest.exceptions.RegraDeNegocioException;
@@ -46,5 +47,10 @@ public class ComissaoController implements ComissaoControllerDoc {
     @GetMapping("/{id}")
     public ResponseEntity<ComissaoDTO> listById(@PathVariable("id") Integer id) throws RegraDeNegocioException {
         return new ResponseEntity<>(comissaoService.listById(id), HttpStatus.OK);
+    }
+
+    @PostMapping("/com-cargo")
+    public ResponseEntity<ComissaoDTO> createComCargoCalculado(@Valid @RequestBody ComissaoComCargoCreateDTO dto) throws RegraDeNegocioException {
+        return new ResponseEntity<>(comissaoService.createComCargoCalculado(dto), HttpStatus.CREATED);
     }
 }
