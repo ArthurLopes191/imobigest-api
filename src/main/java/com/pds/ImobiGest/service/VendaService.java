@@ -3,10 +3,13 @@ package com.pds.ImobiGest.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pds.ImobiGest.dto.venda.VendaCreateDTO;
 import com.pds.ImobiGest.dto.venda.VendaDTO;
+import com.pds.ImobiGest.entity.ComissaoEntity;
 import com.pds.ImobiGest.entity.ImobiliariaEntity;
 import com.pds.ImobiGest.entity.VendaEntity;
 import com.pds.ImobiGest.exceptions.RegraDeNegocioException;
+import com.pds.ImobiGest.repository.ComissaoRepository;
 import com.pds.ImobiGest.repository.VendaRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +23,7 @@ public class VendaService {
     private final ObjectMapper objectMapper;
     private final VendaRepository vendaRepository;
     private final ImobiliariaService imobiliariaService;
+    private final ComissaoRepository comissaoRepository;
 
     public VendaDTO create(VendaCreateDTO vendaCreateDTO) throws RegraDeNegocioException {
         VendaEntity venda = new VendaEntity();
@@ -67,7 +71,7 @@ public class VendaService {
 
     }
 
-    public List<VendaDTO> list(){
+    public List<VendaDTO> list() {
         return vendaRepository.findAll().stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
@@ -75,6 +79,10 @@ public class VendaService {
 
     public void delete(Integer id) throws RegraDeNegocioException {
         VendaEntity venda = getById(id);
+
+        List<ComissaoEntity> comissoes = comissaoRepository.findByVendaId(id);
+        comissaoRepository.deleteAll(comissoes);
+
         vendaRepository.delete(venda);
     }
 
@@ -91,7 +99,7 @@ public class VendaService {
     private VendaDTO convertToDTO(VendaEntity vendaEntity) {
         VendaDTO vendaDTO = objectMapper.convertValue(vendaEntity, VendaDTO.class);
 
-        if(vendaEntity.getImobiliaria() != null){
+        if (vendaEntity.getImobiliaria() != null) {
             vendaDTO.setIdImobiliaria(vendaEntity.getImobiliaria().getId());
         }
 
