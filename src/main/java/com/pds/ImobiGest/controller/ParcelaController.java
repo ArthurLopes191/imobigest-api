@@ -48,4 +48,9 @@ public class ParcelaController implements ParcelaControllerDoc {
     public ResponseEntity<ParcelaDTO> listById(@PathVariable("id") Integer id) throws RegraDeNegocioException {
         return new ResponseEntity<>(parcelaService.listById(id), HttpStatus.OK);
     }
+
+    @GetMapping("/venda/{vendaId}")
+    public List<ParcelaDTO> listByVenda(@PathVariable("vendaId") Integer vendaId) {
+        return parcelaService.listByVenda(vendaId);
+    }
 }

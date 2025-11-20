@@ -69,6 +69,13 @@ public class ParcelaService {
         parcelaRepository.delete(parcela);
     }
 
+    public List<ParcelaDTO> listByVenda(Integer vendaId) {
+        return parcelaRepository.findByVendaId(vendaId)
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
     public ParcelaEntity getById(Integer id) throws RegraDeNegocioException {
         return parcelaRepository.findById(id)
                 .orElseThrow(() -> new RegraDeNegocioException("Parcela não encontrada"));
