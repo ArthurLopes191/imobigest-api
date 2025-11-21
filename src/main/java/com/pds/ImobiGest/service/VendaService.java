@@ -11,8 +11,14 @@ import com.pds.ImobiGest.repository.ComissaoRepository;
 import com.pds.ImobiGest.repository.VendaRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -84,6 +90,39 @@ public class VendaService {
         comissaoRepository.deleteAll(comissoes);
 
         vendaRepository.delete(venda);
+    }
+
+    public Page<VendaDTO> searchVendas(
+            String descricao,
+            BigDecimal valorMin,
+            BigDecimal valorMax,
+            LocalDate dataInicio,
+            LocalDate dataFim,
+            String formaPagamento,
+            Integer idImobiliaria,
+            Integer idProfissional,
+            String nomeComprador,
+            int page,
+            int limit,
+            String sortBy,
+            String sortOrder) {
+
+        Page<VendaEntity> vendas = vendaRepository.findVendasWithFilters(
+                descricao,
+                valorMin,
+                valorMax,
+                dataInicio,
+                dataFim,
+                formaPagamento,
+                idImobiliaria,
+                idProfissional,
+                nomeComprador,
+                sortBy,
+                sortOrder,
+                PageRequest.of(page, limit)
+        );
+
+        return vendas.map(this::convertToDTO);
     }
 
     public VendaDTO listById(Integer id) throws RegraDeNegocioException {
