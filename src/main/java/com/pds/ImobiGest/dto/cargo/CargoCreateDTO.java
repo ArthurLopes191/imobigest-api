@@ -9,4 +9,5 @@ import lombok.NoArgsConstructor;
 @Data
 public class CargoCreateDTO {
     private String nome;
+    private Boolean comissaoAutomatica = false;
 }

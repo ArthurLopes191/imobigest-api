@@ -24,6 +24,9 @@ public class CargoEntity {
     @Column(name = "nome")
     private String nome;
 
+    @Column(name = "comissao_automatica")
+    private Boolean comissaoAutomatica = false;
+
     @JsonBackReference("profissional-cargo")
     @OneToMany(mappedBy = "cargo", fetch = FetchType.LAZY)
     private List<ProfissionalCargoEntity> profissionais;

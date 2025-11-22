@@ -22,6 +22,8 @@ public class CargoService {
     public CargoDTO create(CargoCreateDTO cargoCreateDTO) throws RegraDeNegocioException {
         CargoEntity cargoEntity = new CargoEntity();
         cargoEntity.setNome(cargoCreateDTO.getNome());
+        cargoEntity.setComissaoAutomatica(cargoCreateDTO.getComissaoAutomatica() != null
+                ? cargoCreateDTO.getComissaoAutomatica() : false);
         CargoEntity saved = cargoRepository.save(cargoEntity);
         return convertToDTO(saved);
     }
@@ -29,6 +31,8 @@ public class CargoService {
     public CargoDTO update(Integer id, CargoCreateDTO cargoCreateDTO) throws RegraDeNegocioException {
         CargoEntity cargoEntity = getById(id);
         cargoEntity.setNome(cargoCreateDTO.getNome());
+        cargoEntity.setComissaoAutomatica(cargoCreateDTO.getComissaoAutomatica() != null
+                ? cargoCreateDTO.getComissaoAutomatica() : false);
         cargoRepository.save(cargoEntity);
         return convertToDTO(cargoEntity);
     }

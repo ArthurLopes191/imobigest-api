@@ -14,6 +14,8 @@ import java.util.List;
 public interface ComissaoRepository extends JpaRepository<ComissaoEntity, Integer> {
     List<ComissaoEntity> findByVendaId(Integer vendaId);
 
+    boolean existsByVendaIdAndProfissionalId(Integer vendaId, Integer profissionalId);
+
     @Query(value = "SELECT COALESCE(SUM(c.valor_comissao), 0) FROM comissao c " +
             "JOIN venda v ON v.id = c.id_venda " +
             "JOIN profissional p ON p.id = c.id_profissional " +

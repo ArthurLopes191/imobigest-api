@@ -16,5 +16,6 @@ public class ComissaoDTO {
     private BigDecimal valorComissao;
     private Integer idVenda;
     private Integer idProfissional;
+    private String tipoComissao;
 
 }

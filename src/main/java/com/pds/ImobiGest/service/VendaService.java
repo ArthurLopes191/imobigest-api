@@ -3,11 +3,11 @@ package com.pds.ImobiGest.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pds.ImobiGest.dto.venda.VendaCreateDTO;
 import com.pds.ImobiGest.dto.venda.VendaDTO;
-import com.pds.ImobiGest.entity.ComissaoEntity;
-import com.pds.ImobiGest.entity.ImobiliariaEntity;
-import com.pds.ImobiGest.entity.VendaEntity;
+import com.pds.ImobiGest.entity.*;
 import com.pds.ImobiGest.exceptions.RegraDeNegocioException;
 import com.pds.ImobiGest.repository.ComissaoRepository;
+import com.pds.ImobiGest.repository.ConfigComissaoRepository;
+import com.pds.ImobiGest.repository.ProfissionalCargoRepository;
 import com.pds.ImobiGest.repository.VendaRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +30,8 @@ public class VendaService {
     private final VendaRepository vendaRepository;
     private final ImobiliariaService imobiliariaService;
     private final ComissaoRepository comissaoRepository;
+    private final ProfissionalCargoRepository profissionalCargoRepository;
+    private final ConfigComissaoRepository configComissaoRepository;
 
     public VendaDTO create(VendaCreateDTO vendaCreateDTO) throws RegraDeNegocioException {
         VendaEntity venda = new VendaEntity();
@@ -52,7 +54,37 @@ public class VendaService {
         }
 
         VendaEntity saved = vendaRepository.save(venda);
+        criarComissoesAutomaticas(saved);
         return convertToDTO(saved);
+    }
+
+    private void criarComissoesAutomaticas(VendaEntity venda) {
+        List<ProfissionalCargoEntity> profissionaisComComissaoAutomatica =
+                profissionalCargoRepository.findByCargoComissaoAutomaticaAndImobiliaria(
+                        venda.getImobiliaria().getId());
+
+        profissionaisComComissaoAutomatica.forEach(profissionalCargo -> {
+            boolean jaTemComissao = comissaoRepository.existsByVendaIdAndProfissionalId(
+                    venda.getId(), profissionalCargo.getProfissional().getId());
+
+            if (!jaTemComissao) {
+                ComissaoEntity comissao = new ComissaoEntity();
+                comissao.setVenda(venda);
+                comissao.setProfissional(profissionalCargo.getProfissional());
+                comissao.setTipoComissao("AUTOMATICA"); // Marca como automática
+
+                configComissaoRepository
+                        .findByImobiliariaIdAndCargoId(venda.getImobiliaria().getId(),
+                                profissionalCargo.getCargo().getId())
+                        .ifPresent(config -> {
+                            comissao.setPercentual(config.getPercentual());
+                            comissao.setValorComissao(venda.getValorTotal()
+                                    .multiply(config.getPercentual().divide(new BigDecimal(100))));
+                        });
+
+                comissaoRepository.save(comissao);
+            }
+        });
     }
 
     public VendaDTO update(Integer id, VendaCreateDTO vendaCreateDTO) throws RegraDeNegocioException {
