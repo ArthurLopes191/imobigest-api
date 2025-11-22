@@ -33,6 +33,7 @@ public class ComissaoService {
         ComissaoEntity comissao = new ComissaoEntity();
         comissao.setValorComissao(comissaoCreateDTO.getValorComissao());
         comissao.setPercentual(comissaoCreateDTO.getPercentual());
+        comissao.setTipoComissao("MANUAL");
 
         VendaEntity venda = vendaService.getById(comissaoCreateDTO.getIdVenda());
         comissao.setVenda(venda);
@@ -134,6 +135,7 @@ public class ComissaoService {
         comissao.setPercentual(percentualTotal);
         comissao.setVenda(venda);
         comissao.setProfissional(profissional);
+        comissao.setTipoComissao("MANUAL");
 
         ComissaoEntity saved = comissaoRepository.save(comissao);
         return convertToDTO(saved);
@@ -151,6 +153,7 @@ public class ComissaoService {
         comissaoDTO.setValorComissao(comissao.getValorComissao());
         comissaoDTO.setIdVenda(comissao.getVenda().getId());
         comissaoDTO.setIdProfissional(comissao.getProfissional().getId());
+        comissaoDTO.setTipoComissao(comissao.getTipoComissao());
         return comissaoDTO;
     }
 }

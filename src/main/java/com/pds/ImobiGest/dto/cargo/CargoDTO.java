@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class CargoDTO {
     private Integer id;
     private String nome;
+    private Boolean comissaoAutomatica;
 }

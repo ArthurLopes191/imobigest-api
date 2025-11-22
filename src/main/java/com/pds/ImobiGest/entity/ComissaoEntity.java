@@ -26,6 +26,9 @@ public class ComissaoEntity {
     @Column(name = "valor_comissao")
     private BigDecimal valorComissao;
 
+    @Column(name = "tipo_comissao")
+    private String tipoComissao; // "AUTOMATICA" ou "MANUAL"
+
     @ManyToOne
     @JoinColumn(name = "id_venda")
     private VendaEntity venda;
