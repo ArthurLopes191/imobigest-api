@@ -1,14 +1,12 @@
-package com.pds.ImobiGest.dto.cargo;
+package com.pds.ImobiGest.dto.Imobiliaria;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class CargoDTO {
-    private Integer id;
+public class ImobiliariaResumoDTO {
     private String nome;
-    private Boolean comissaoAutomatica;
 }

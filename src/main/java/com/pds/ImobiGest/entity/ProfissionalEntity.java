@@ -1,7 +1,9 @@
 package com.pds.ImobiGest.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -27,15 +29,16 @@ public class ProfissionalEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_imobiliaria", nullable = false)
-    @JsonIgnore
+    @JsonBackReference
     private ImobiliariaEntity imobiliaria;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "profissional")
+    @OneToMany(mappedBy = "profissional", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties({"profissional"})
     private List<ComissaoEntity> comissoes;
 
-    @JsonManagedReference("profissional-cargo")
-    @OneToMany(mappedBy = "profissional", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+
+    @OneToMany(mappedBy = "profissional", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties({"imobiliaria", "comissoes", "cargos"})
     private List<ProfissionalCargoEntity> cargos;
 
 }

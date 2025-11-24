@@ -1,6 +1,7 @@
 package com.pds.ImobiGest.controller;
 
 import com.pds.ImobiGest.controller.documentation.ProfissionalControllerDoc;
+import com.pds.ImobiGest.dto.profissional.ProfissionalCompletoDTO;
 import com.pds.ImobiGest.dto.profissional.ProfissionalCreateDTO;
 import com.pds.ImobiGest.dto.profissional.ProfissionalDTO;
 import com.pds.ImobiGest.exceptions.RegraDeNegocioException;
@@ -46,5 +47,15 @@ public class ProfissionalController implements ProfissionalControllerDoc {
     @GetMapping("/{id}")
     public ResponseEntity<ProfissionalDTO> listById(@PathVariable("id") Integer id) throws RegraDeNegocioException {
         return new ResponseEntity<>(profissionalService.listById(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/completo")
+    public List<ProfissionalCompletoDTO> listCompleto() {
+        return profissionalService.listCompleto();
+    }
+
+    @GetMapping("/completo/{id}")
+    public ResponseEntity<ProfissionalCompletoDTO> listCompletoById(@PathVariable("id") Integer id) throws RegraDeNegocioException {
+        return new ResponseEntity<>(profissionalService.listCompletoById(id), HttpStatus.OK);
     }
 }

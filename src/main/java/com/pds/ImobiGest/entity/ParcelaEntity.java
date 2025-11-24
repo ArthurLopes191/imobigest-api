@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Entity(name = "PARCELA")
+@Entity
 @Table(name = "PARCELA")
 @NoArgsConstructor
 @AllArgsConstructor

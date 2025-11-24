@@ -4,11 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class CargoDTO {
+public class CargoResumoDTO {
     private Integer id;
     private String nome;
-    private Boolean comissaoAutomatica;
 }

@@ -47,4 +47,9 @@ public class ProfissionalCargoController implements ProfissionalCargoDoc {
     public ResponseEntity<ProfissionalCargoDTO> listById(@PathVariable("id") Integer id) throws RegraDeNegocioException {
         return new ResponseEntity<>(profissionalCargoService.listById(id), HttpStatus.OK);
     }
+
+    @GetMapping("/profissional/{idProfissional}")
+    public List<ProfissionalCargoDTO> listByIdProfissional(@PathVariable("idProfissional") Integer idProfissional) throws RegraDeNegocioException{
+        return profissionalCargoService.listByIdProfissional(idProfissional);
+    }
 }

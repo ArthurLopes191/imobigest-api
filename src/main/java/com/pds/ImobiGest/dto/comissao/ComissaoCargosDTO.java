@@ -9,13 +9,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class ComissaoDTO {
-
-    private Integer id;
-    private BigDecimal percentual;
+public class ComissaoCargosDTO {
+    private String nomeCargo;
     private BigDecimal valorComissao;
-    private Integer idVenda;
-    private Integer idProfissional;
-    private String tipoComissao;
-
 }
