@@ -5,10 +5,7 @@ import com.pds.ImobiGest.dto.venda.VendaCreateDTO;
 import com.pds.ImobiGest.dto.venda.VendaDTO;
 import com.pds.ImobiGest.entity.*;
 import com.pds.ImobiGest.exceptions.RegraDeNegocioException;
-import com.pds.ImobiGest.repository.ComissaoRepository;
-import com.pds.ImobiGest.repository.ConfigComissaoRepository;
-import com.pds.ImobiGest.repository.ProfissionalCargoRepository;
-import com.pds.ImobiGest.repository.VendaRepository;
+import com.pds.ImobiGest.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -32,6 +29,7 @@ public class VendaService {
     private final ComissaoRepository comissaoRepository;
     private final ProfissionalCargoRepository profissionalCargoRepository;
     private final ConfigComissaoRepository configComissaoRepository;
+    private final ParcelaRepository parcelaRepository;
 
     public VendaDTO create(VendaCreateDTO vendaCreateDTO) throws RegraDeNegocioException {
         VendaEntity venda = new VendaEntity();
@@ -125,11 +123,14 @@ public class VendaService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public void delete(Integer id) throws RegraDeNegocioException {
         VendaEntity venda = getById(id);
 
         List<ComissaoEntity> comissoes = comissaoRepository.findByVendaId(id);
         comissaoRepository.deleteAll(comissoes);
+
+        parcelaRepository.deleteByVendaId(id);
 
         vendaRepository.delete(venda);
     }

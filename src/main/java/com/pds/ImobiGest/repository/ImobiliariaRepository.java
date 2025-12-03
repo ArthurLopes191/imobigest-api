@@ -21,6 +21,14 @@ public interface ImobiliariaRepository extends JpaRepository<ImobiliariaEntity, 
     @Modifying
     @Transactional
     @Query(value = """
+    DELETE FROM parcela WHERE id_venda IN
+    (SELECT id FROM venda WHERE id_imobiliaria = ?1)
+    """, nativeQuery = true)
+    void deleteParcelasByImobiliariaId(Integer imobiliariaId);
+
+    @Modifying
+    @Transactional
+    @Query(value = """
         DELETE FROM profissional_cargo WHERE id_profissional IN 
         (SELECT id FROM profissional WHERE id_imobiliaria = ?1)
         """, nativeQuery = true)

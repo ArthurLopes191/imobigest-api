@@ -56,8 +56,9 @@ public class ImobiliariaService {
 
         // Deletar na ordem correta (do mais dependente para o menos dependente)
         imobiliariaRepository.deleteComissoesByImobiliariaId(id);
+        imobiliariaRepository.deleteParcelasByImobiliariaId(id); // ADICIONE ESTA LINHA
         imobiliariaRepository.deleteProfissionalCargosByImobiliariaId(id);
-        imobiliariaRepository.deleteVendasByImobiliariaId(id); // NOVA LINHA
+        imobiliariaRepository.deleteVendasByImobiliariaId(id);
         imobiliariaRepository.deleteConfigComissaoByImobiliariaId(id);
         imobiliariaRepository.deleteProfissionaisByImobiliariaId(id);
         imobiliariaRepository.deleteById(id);
