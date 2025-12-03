@@ -124,8 +124,8 @@ public class ComissaoService {
                 .map(ConfigComissaoDTO::getPercentual)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        // Calcular valor da comissão usando o valor da venda
-        BigDecimal valorComissao = venda.getValorTotal()
+        // Calcular valor da comissão usando o valorComissaoImobiliaria
+        BigDecimal valorComissao = venda.getValorComissaoImobiliaria()
                 .multiply(percentualTotal)
                 .divide(new BigDecimal("100"), 2, RoundingMode.HALF_UP);
 

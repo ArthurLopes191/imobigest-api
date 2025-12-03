@@ -21,5 +21,11 @@ public class VendaDTO {
     private Integer qtdParcelas;
     private String compradorNome;
     private String compradorContato;
+    private String vendedorNome;
+    private String vendedorContato;
+    private BigDecimal comissaoComprador;
+    private BigDecimal comissaoVendedor;
+    private BigDecimal comissaoImobiliaria;
+    private BigDecimal valorComissaoImobiliaria;
     private Integer idImobiliaria;
 }

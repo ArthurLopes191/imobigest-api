@@ -24,4 +24,7 @@ public class DashboardDTO {
     private BigDecimal mediaPeriodoComissao;
 
     private List<ComissaoCargosDTO> comissoesPorCargo;
+
+    private List<ComissaoCargosDTO> comissoesAutomaticasPorCargo;
+    private List<ComissaoCargosDTO> comissoesManuaisPorCargo;
 }

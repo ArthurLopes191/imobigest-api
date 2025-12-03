@@ -46,6 +46,10 @@ public class DashboardService {
         dashboard.setComissaoGeralTotal(calcularComissaoGeralTotal(idImobiliaria));
         dashboard.setComissoesPorCargo(calcularComissoesPorCargo(idImobiliaria));
 
+        // Adicionar comissões separadas por tipo
+        dashboard.setComissoesAutomaticasPorCargo(calcularComissoesAutomaticasPorCargo(idImobiliaria));
+        dashboard.setComissoesManuaisPorCargo(calcularComissoesManuaisPorCargo(idImobiliaria));
+
         // Médias
         dashboard.setMediaMensalAnoComissao(calcularMediaMensalAnoComissao(idImobiliaria));
         dashboard.setMediaPeriodoComissao(calcularMediaPeriodoComissao(idImobiliaria));
@@ -58,26 +62,6 @@ public class DashboardService {
         int anoAtual = Year.now().getValue();
         return comissaoRepository.somarComissoesPorImobiliariaEAno(idImobiliaria, anoAtual);
     }
-
-   // private BigDecimal calcularComissaoGeralTotalPeriodo(Integer idImobiliaria) {
-        // Implementar lógica para calcular comissão geral da equipe
-//        return BigDecimal.ZERO;
-  //  }
-
-//    private BigDecimal calcularComissaoGeralEquipe(Integer idImobiliaria) {
-//        // Implementar lógica para calcular comissão geral da equipe
-//        return BigDecimal.ZERO;
-//    }
-
-//    private BigDecimal calcularMediaMensalAnoEquipe(Integer idImobiliaria) {
-//        // Implementar lógica para calcular média mensal do ano da equipe
-//        return BigDecimal.ZERO;
-//    }
-//
-//    private BigDecimal calcularMediaPeriodoEquipe(Integer idImobiliaria) {
-//        // Implementar lógica para calcular média do período da equipe
-//        return BigDecimal.ZERO;
-//    }
 
     private BigDecimal calcularMediaMensalAnoComissao(Integer idImobiliaria) {
         int anoAtual = Year.now().getValue();
@@ -127,6 +111,10 @@ public class DashboardService {
         dashboard.setComissaoGeralTotal(comissaoTotalPeriodo);
         dashboard.setComissoesPorCargo(calcularComissoesPorCargoPeriodo(idImobiliaria, dataInicio, dataFim));
 
+        // Adicionar comissões separadas por tipo para período
+        dashboard.setComissoesAutomaticasPorCargo(calcularComissoesAutomaticasPorCargoPeriodo(idImobiliaria, dataInicio, dataFim));
+        dashboard.setComissoesManuaisPorCargo(calcularComissoesManuaisPorCargoPeriodo(idImobiliaria, dataInicio, dataFim));
+
         // Média mensal do período
         dashboard.setMediaMensalAnoComissao(calcularMediaMensalPeriodoComissao(idImobiliaria, dataInicio, dataFim));
 
@@ -167,5 +155,53 @@ public class DashboardService {
         }
 
         return totalComissoes.divide(BigDecimal.valueOf(mesesNoPeriodo), 2, RoundingMode.HALF_UP);
+    }
+
+    // Adicione estes métodos ao DashboardService
+
+    private List<ComissaoCargosDTO> calcularComissoesAutomaticasPorCargo(Integer idImobiliaria) {
+        int anoAtual = Year.now().getValue();
+        List<Object[]> resultados = comissaoRepository.somarComissoesAutomaticasPorCargoEAno(idImobiliaria, anoAtual);
+
+        return resultados.stream()
+                .map(resultado -> new ComissaoCargosDTO(
+                        (String) resultado[0],
+                        (BigDecimal) resultado[1]
+                ))
+                .collect(Collectors.toList());
+    }
+
+    private List<ComissaoCargosDTO> calcularComissoesManuaisPorCargo(Integer idImobiliaria) {
+        int anoAtual = Year.now().getValue();
+        List<Object[]> resultados = comissaoRepository.somarComissoesManuaisPorCargoEAno(idImobiliaria, anoAtual);
+
+        return resultados.stream()
+                .map(resultado -> new ComissaoCargosDTO(
+                        (String) resultado[0],
+                        (BigDecimal) resultado[1]
+                ))
+                .collect(Collectors.toList());
+    }
+
+    private List<ComissaoCargosDTO> calcularComissoesAutomaticasPorCargoPeriodo(Integer idImobiliaria, LocalDate dataInicio, LocalDate dataFim) {
+        List<Object[]> resultados = comissaoRepository.somarComissoesPorCargoTipoEPeriodo(idImobiliaria, dataInicio, dataFim, "AUTOMATICA");
+
+        return resultados.stream()
+                .map(resultado -> new ComissaoCargosDTO(
+                        (String) resultado[0],
+                        (BigDecimal) resultado[1]
+                ))
+                .collect(Collectors.toList());
+    }
+
+    private List<ComissaoCargosDTO> calcularComissoesManuaisPorCargoPeriodo(Integer idImobiliaria, LocalDate dataInicio, LocalDate dataFim) {
+        List<Object[]> resultados = comissaoRepository.somarComissoesPorCargoTipoEPeriodo(idImobiliaria, dataInicio, dataFim, "MANUAL");
+
+        return resultados.stream()
+                .map(resultado -> new ComissaoCargosDTO(
+                        (String) resultado[0],
+                        (BigDecimal) resultado[1]
+                ))
+                .collect(Collectors.toList());
     }
 }
