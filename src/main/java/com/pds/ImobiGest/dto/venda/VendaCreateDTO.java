@@ -20,5 +20,9 @@ public class VendaCreateDTO {
     private Integer qtdParcelas;
     private String compradorNome;
     private String compradorContato;
+    private String vendedorNome;
+    private String vendedorContato;
+    private BigDecimal comissaoComprador;
+    private BigDecimal comissaoVendedor;
     private Integer idImobiliaria;
 }

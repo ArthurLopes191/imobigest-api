@@ -42,6 +42,11 @@ public class VendaService {
         venda.setQtdParcelas(vendaCreateDTO.getQtdParcelas());
         venda.setCompradorNome(vendaCreateDTO.getCompradorNome());
         venda.setCompradorContato(vendaCreateDTO.getCompradorContato());
+        venda.setVendedorNome(vendaCreateDTO.getVendedorNome());
+        venda.setVendedorContato(vendaCreateDTO.getVendedorContato());
+        venda.setComissaoComprador(vendaCreateDTO.getComissaoComprador());
+        venda.setComissaoVendedor(vendaCreateDTO.getComissaoVendedor());
+        calcularComissaoImobiliaria(venda);
 
         if (vendaCreateDTO.getIdImobiliaria() != null) {
             ImobiliariaEntity imobiliaria = imobiliariaService.getById(vendaCreateDTO.getIdImobiliaria());
@@ -78,7 +83,7 @@ public class VendaService {
                                 profissionalCargo.getCargo().getId())
                         .ifPresent(config -> {
                             comissao.setPercentual(config.getPercentual());
-                            comissao.setValorComissao(venda.getValorTotal()
+                            comissao.setValorComissao(venda.getValorComissaoImobiliaria()
                                     .multiply(config.getPercentual().divide(new BigDecimal(100))));
                         });
 
@@ -96,6 +101,11 @@ public class VendaService {
         venda.setQtdParcelas(vendaCreateDTO.getQtdParcelas());
         venda.setCompradorNome(vendaCreateDTO.getCompradorNome());
         venda.setCompradorContato(vendaCreateDTO.getCompradorContato());
+        venda.setVendedorNome(vendaCreateDTO.getVendedorNome());
+        venda.setVendedorContato(vendaCreateDTO.getVendedorContato());
+        venda.setComissaoComprador(vendaCreateDTO.getComissaoComprador());
+        venda.setComissaoVendedor(vendaCreateDTO.getComissaoVendedor());
+        calcularComissaoImobiliaria(venda);
 
         if (vendaCreateDTO.getIdImobiliaria() != null) {
             ImobiliariaEntity imobiliaria = imobiliariaService.getById(vendaCreateDTO.getIdImobiliaria());
@@ -160,6 +170,23 @@ public class VendaService {
     public VendaDTO listById(Integer id) throws RegraDeNegocioException {
         VendaEntity venda = getById(id);
         return convertToDTO(venda);
+    }
+
+    private void calcularComissaoImobiliaria(VendaEntity venda) {
+        BigDecimal comissaoComprador = venda.getComissaoComprador() != null ? venda.getComissaoComprador() : BigDecimal.ZERO;
+        BigDecimal comissaoVendedor = venda.getComissaoVendedor() != null ? venda.getComissaoVendedor() : BigDecimal.ZERO;
+        BigDecimal comissaoTotal = comissaoComprador.add(comissaoVendedor);
+
+        venda.setComissaoImobiliaria(comissaoTotal);
+
+        // Calcula o valor monetário da comissão
+        if (venda.getValorTotal() != null && comissaoTotal.compareTo(BigDecimal.ZERO) > 0) {
+            BigDecimal valorComissao = venda.getValorTotal()
+                    .multiply(comissaoTotal.divide(new BigDecimal(100)));
+            venda.setValorComissaoImobiliaria(valorComissao);
+        } else {
+            venda.setValorComissaoImobiliaria(BigDecimal.ZERO);
+        }
     }
 
     public VendaEntity getById(Integer id) throws RegraDeNegocioException {

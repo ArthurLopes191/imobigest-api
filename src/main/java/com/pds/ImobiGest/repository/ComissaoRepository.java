@@ -47,29 +47,6 @@ public interface ComissaoRepository extends JpaRepository<ComissaoEntity, Intege
                                                    @Param("dataInicio") LocalDate dataInicio,
                                                    @Param("dataFim") LocalDate dataFim);
 
-    @Query(value = "SELECT COALESCE(SUM(c.valor_comissao), 0) FROM comissao c " +
-            "JOIN venda v ON v.id = c.id_venda " +
-            "JOIN profissional p ON p.id = c.id_profissional " +
-            "JOIN profissional_cargo pc ON pc.id_profissional = p.id " +
-            "JOIN cargo ca ON ca.id = pc.id_cargo " +
-            "WHERE p.id_imobiliaria = :idImobiliaria AND ca.nome = 'Sócio' " +
-            "AND v.data_venda BETWEEN :dataInicio AND :dataFim",
-            nativeQuery = true)
-    BigDecimal somarComissoesSociosPeriodo(@Param("idImobiliaria") Integer idImobiliaria,
-                                           @Param("dataInicio") LocalDate dataInicio,
-                                           @Param("dataFim") LocalDate dataFim);
-
-    @Query(value = "SELECT COALESCE(SUM(c.valor_comissao), 0) FROM comissao c " +
-            "JOIN venda v ON v.id = c.id_venda " +
-            "JOIN profissional p ON p.id = c.id_profissional " +
-            "JOIN profissional_cargo pc ON pc.id_profissional = p.id " +
-            "JOIN cargo ca ON ca.id = pc.id_cargo " +
-            "WHERE p.id_imobiliaria = :idImobiliaria AND ca.nome = 'Corretor' " +
-            "AND v.data_venda BETWEEN :dataInicio AND :dataFim",
-            nativeQuery = true)
-    BigDecimal somarComissoesCorretoresPeriodo(@Param("idImobiliaria") Integer idImobiliaria,
-                                               @Param("dataInicio") LocalDate dataInicio,
-                                               @Param("dataFim") LocalDate dataFim);
 
     @Query(value = "SELECT ca.nome, COALESCE(SUM(c.valor_comissao), 0) FROM comissao c " +
             "JOIN venda v ON v.id = c.id_venda " +
@@ -93,4 +70,44 @@ public interface ComissaoRepository extends JpaRepository<ComissaoEntity, Intege
     List<Object[]> somarComissoesPorCargoPeriodo(@Param("idImobiliaria") Integer idImobiliaria,
                                                  @Param("dataInicio") LocalDate dataInicio,
                                                  @Param("dataFim") LocalDate dataFim);
+
+    // Comissões automáticas por cargo
+    @Query(value = "SELECT ca.nome, COALESCE(SUM(c.valor_comissao), 0) FROM comissao c " +
+            "JOIN venda v ON v.id = c.id_venda " +
+            "JOIN profissional p ON p.id = c.id_profissional " +
+            "JOIN profissional_cargo pc ON pc.id_profissional = p.id " +
+            "JOIN cargo ca ON ca.id = pc.id_cargo " +
+            "WHERE p.id_imobiliaria = :idImobiliaria AND EXTRACT(YEAR FROM v.data_venda) = :ano " +
+            "AND c.tipo_comissao = 'AUTOMATICA' " +
+            "GROUP BY ca.nome ORDER BY ca.nome",
+            nativeQuery = true)
+    List<Object[]> somarComissoesAutomaticasPorCargoEAno(@Param("idImobiliaria") Integer idImobiliaria, @Param("ano") int ano);
+
+    // Comissões manuais por cargo
+    @Query(value = "SELECT ca.nome, COALESCE(SUM(c.valor_comissao), 0) FROM comissao c " +
+            "JOIN venda v ON v.id = c.id_venda " +
+            "JOIN profissional p ON p.id = c.id_profissional " +
+            "JOIN profissional_cargo pc ON pc.id_profissional = p.id " +
+            "JOIN cargo ca ON ca.id = pc.id_cargo " +
+            "WHERE p.id_imobiliaria = :idImobiliaria AND EXTRACT(YEAR FROM v.data_venda) = :ano " +
+            "AND c.tipo_comissao = 'MANUAL' " +
+            "GROUP BY ca.nome ORDER BY ca.nome",
+            nativeQuery = true)
+    List<Object[]> somarComissoesManuaisPorCargoEAno(@Param("idImobiliaria") Integer idImobiliaria, @Param("ano") int ano);
+
+    // Para períodos específicos
+    @Query(value = "SELECT ca.nome, COALESCE(SUM(c.valor_comissao), 0) FROM comissao c " +
+            "JOIN venda v ON v.id = c.id_venda " +
+            "JOIN profissional p ON p.id = c.id_profissional " +
+            "JOIN profissional_cargo pc ON pc.id_profissional = p.id " +
+            "JOIN cargo ca ON ca.id = pc.id_cargo " +
+            "WHERE p.id_imobiliaria = :idImobiliaria " +
+            "AND v.data_venda BETWEEN :dataInicio AND :dataFim " +
+            "AND c.tipo_comissao = :tipoComissao " +
+            "GROUP BY ca.nome ORDER BY ca.nome",
+            nativeQuery = true)
+    List<Object[]> somarComissoesPorCargoTipoEPeriodo(@Param("idImobiliaria") Integer idImobiliaria,
+                                                      @Param("dataInicio") LocalDate dataInicio,
+                                                      @Param("dataFim") LocalDate dataFim,
+                                                      @Param("tipoComissao") String tipoComissao);
 }

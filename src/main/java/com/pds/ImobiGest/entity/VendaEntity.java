@@ -44,6 +44,24 @@ public class VendaEntity {
     @Column(name = "comprador_contato")
     private String compradorContato;
 
+    @Column(name = "vendedor_nome")
+    private String vendedorNome;
+
+    @Column(name = "vendedor_contato")
+    private String vendedorContato;
+
+    @Column(name = "comissao_comprador", precision = 5, scale = 2)
+    private BigDecimal comissaoComprador;
+
+    @Column(name = "comissao_vendedor", precision = 5, scale = 2)
+    private BigDecimal comissaoVendedor;
+
+    @Column(name = "comissao_imobiliaria", precision = 5, scale = 2)
+    private BigDecimal comissaoImobiliaria;
+
+    @Column(name = "valor_comissao_imobiliaria", precision = 15, scale = 2)
+    private BigDecimal valorComissaoImobiliaria;
+
     @ManyToOne
     @JoinColumn(name = "id_imobiliaria")
     private ImobiliariaEntity imobiliaria;
